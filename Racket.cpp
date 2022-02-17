@@ -18,7 +18,7 @@ Racket::Racket(char side)
 
 	this->shape.setPosition(this->position.x, this->position.y);
 
-	this->movement = 5;
+	this->movement = 7;
 }
 
 void Racket::draw(sf::RenderWindow& window)
@@ -50,4 +50,9 @@ void Racket::moveDown()
 sf::FloatRect Racket::getHitBox()
 {
 	return sf::FloatRect(this->position.x, this->position.y, RACKET_WIDTH, RACKET_HEIGHT);
+}
+
+Position Racket::getPosition()
+{
+	return this->position;
 }

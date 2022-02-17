@@ -13,6 +13,9 @@ int main()
 	Racket leftRacket('L');
 	Racket rightRacket('R');
 
+	sf::RectangleShape middleLine(sf::Vector2f(LINE_WIDTH, SCREEN_HEIGHT));
+	middleLine.setPosition(SCREEN_WIDTH/2-LINE_WIDTH/2, 0);
+
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -28,12 +31,16 @@ int main()
 		}
 
 		// Collision between the ball and rackets
-		if (ball.getHitBox().intersects(rightRacket.getHitBox()) ||
-			ball.getHitBox().intersects(leftRacket.getHitBox()))
+		if (ball.getHitBox().intersects(rightRacket.getHitBox()))
 		{
-			ball.changeDirection();
+			ball.changeDirection(rightRacket.getPosition());
+		}
+		else if (ball.getHitBox().intersects(leftRacket.getHitBox()))
+		{
+			ball.changeDirection(leftRacket.getPosition());
 		}
 
+		// Controls for the rackets
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
 		{
 			leftRacket.moveUp();
@@ -53,6 +60,18 @@ int main()
 		}
 
 		ball.move();
+
+		unsigned short pointPos = BALL_SIZE;
+
+		while (pointPos < SCREEN_HEIGHT)
+		{
+			sf::RectangleShape rectangle(sf::Vector2f(LINE_WIDTH, BALL_SIZE));
+			rectangle.setPosition(SCREEN_WIDTH/2 - BALL_SIZE/2, pointPos);
+
+			pointPos += BALL_SIZE * 2;
+
+			window.draw(rectangle);
+		}
 
 		ball.draw(window);
 

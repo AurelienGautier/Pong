@@ -10,12 +10,12 @@ public:
 	void draw(sf::RenderWindow &window);
 	void move();
 	sf::FloatRect getHitBox();
-	void changeDirection();
+	void changeDirection(Position racketPos);
 	
 private:
 	sf::RectangleShape shape;
 	Position position;
-	char movementX;
-	char mouvementY;
+	float movementX;
+	float mouvementY;
 };
 

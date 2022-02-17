@@ -11,6 +11,7 @@ public:
 	void moveUp();
 	void moveDown();
 	sf::FloatRect getHitBox();
+	Position getPosition();
 
 private:
 	sf::RectangleShape shape;
