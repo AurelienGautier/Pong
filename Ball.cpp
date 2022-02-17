@@ -1,7 +1,6 @@
 #include "Ball.hpp"
-#include <iostream> // temporaire
 
-Ball::Ball() 
+Ball::Ball()
 {
 	shape.setSize(sf::Vector2f(BALL_SIZE, BALL_SIZE));
 
@@ -24,7 +23,7 @@ void Ball::move()
 {
 	this->position.x += this->movementX;
 
-	if (this->position.x > SCREEN_WIDTH || this->position.x < 0)
+	if (this->position.x > SCREEN_WIDTH - BALL_SIZE || this->position.x < 0)
 	{
 		this->position.x = SCREEN_WIDTH / 2;
 	}
@@ -47,4 +46,9 @@ void Ball::changeDirection(Position racketPos)
 	this->movementX = 0 - this->movementX;
 
 	this->mouvementY = ((this->position.y + BALL_SIZE / 2) - (RACKET_HEIGHT / 2) - racketPos.y) / 10;
+}
+
+Position Ball::getPosition()
+{
+	return this->position;
 }

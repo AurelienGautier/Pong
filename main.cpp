@@ -13,6 +13,19 @@ int main()
 	Racket leftRacket('L');
 	Racket rightRacket('R');
 
+	sf::Font font;
+	font.loadFromFile("BMgermar.TTF");
+
+	unsigned char player1Score = 0;
+	unsigned char player2Score = 0;
+
+	// Texts containing players scores
+	sf::Text scoreP1("0", font, 50);
+	sf::Text scoreP2("0", font, 50);
+
+	scoreP1.setPosition(SCREEN_WIDTH / 2 - 100, BALL_SIZE);
+	scoreP2.setPosition(SCREEN_WIDTH / 2 + 50, BALL_SIZE);
+
 	sf::RectangleShape middleLine(sf::Vector2f(LINE_WIDTH, SCREEN_HEIGHT));
 	middleLine.setPosition(SCREEN_WIDTH/2-LINE_WIDTH/2, 0);
 
@@ -60,6 +73,23 @@ int main()
 		}
 
 		ball.move();
+
+		if (ball.getPosition().x <= 0)
+		{
+			player2Score++;
+		}
+		else if (ball.getPosition().x >= SCREEN_WIDTH - BALL_SIZE)
+		{
+			player1Score++;
+		}
+		
+		// Set scores texts
+		scoreP1.setString(std::to_string(player1Score));
+		scoreP2.setString(std::to_string(player2Score));
+
+		// Display scores
+		window.draw(scoreP1);
+		window.draw(scoreP2);
 
 		unsigned short pointPos = BALL_SIZE;
 

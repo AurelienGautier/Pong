@@ -11,6 +11,7 @@ public:
 	void move();
 	sf::FloatRect getHitBox();
 	void changeDirection(Position racketPos);
+	Position getPosition();
 	
 private:
 	sf::RectangleShape shape;

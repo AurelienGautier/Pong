@@ -1,5 +1,5 @@
 #include "Racket.hpp"
-#include <iostream> // temporaire
+
 Racket::Racket(char side)
 {
 	this->shape.setSize(sf::Vector2f(RACKET_WIDTH, RACKET_HEIGHT));
