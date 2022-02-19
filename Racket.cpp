@@ -52,7 +52,7 @@ sf::FloatRect Racket::getHitBox()
 	return sf::FloatRect(this->position.x, this->position.y, RACKET_WIDTH, RACKET_HEIGHT);
 }
 
-Position Racket::getPosition()
+sf::Vector2f Racket::getPosition()
 {
 	return this->position;
 }

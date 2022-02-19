@@ -2,13 +2,19 @@
 #include "Global.hpp"
 #include "Ball.hpp"
 #include "Racket.hpp"
+#include "Particles.hpp"
 
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(SCREEN_WIDTH, SCREEN_HEIGHT), "Pong !");
 	window.setFramerateLimit(60);
 
+	sf::View view(sf::FloatRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT));
+
 	Ball ball;
+
+	// Particles that follow the ball
+	Particles particles(10000);
 	
 	Racket leftRacket('L');
 	Racket rightRacket('R');
@@ -16,6 +22,7 @@ int main()
 	sf::Font font;
 	font.loadFromFile("BMgermar.TTF");
 
+	// Scores of the two players
 	unsigned char player1Score = 0;
 	unsigned char player2Score = 0;
 
@@ -23,17 +30,23 @@ int main()
 	sf::Text scoreP1("0", font, 50);
 	sf::Text scoreP2("0", font, 50);
 
+	// Set the scores displaying positions
 	scoreP1.setPosition(SCREEN_WIDTH / 2 - 100, BALL_SIZE);
 	scoreP2.setPosition(SCREEN_WIDTH / 2 + 50, BALL_SIZE);
 
+	// Initialize and place the middle line
 	sf::RectangleShape middleLine(sf::Vector2f(LINE_WIDTH, SCREEN_HEIGHT));
 	middleLine.setPosition(SCREEN_WIDTH/2-LINE_WIDTH/2, 0);
+
+	sf::Clock clock;
 
 	while (window.isOpen())
 	{
 		sf::Event event;
 
 		window.clear();
+
+		window.setView(view);
 
 		while (window.pollEvent(event))
 		{
@@ -42,6 +55,14 @@ int main()
 				window.close();
 			}
 		}
+
+		ball.move();
+
+		// Set the particles around the ball
+		particles.setEmitter(sf::Vector2f(ball.getPosition().x + BALL_SIZE / 2, ball.getPosition().y + BALL_SIZE / 2));
+
+		sf::Time elapsed = clock.restart();
+		particles.update(elapsed);
 
 		// Collision between the ball and rackets
 		if (ball.getHitBox().intersects(rightRacket.getHitBox()))
@@ -53,7 +74,7 @@ int main()
 			ball.changeDirection(leftRacket.getPosition());
 		}
 
-		// Controls for the rackets
+		// Controls for the left racket
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z))
 		{
 			leftRacket.moveUp();
@@ -63,6 +84,7 @@ int main()
 			leftRacket.moveDown();
 		}
 
+		// Controls the right racket
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 		{
 			rightRacket.moveUp();
@@ -72,8 +94,7 @@ int main()
 			rightRacket.moveDown();
 		}
 
-		ball.move();
-
+		// Add a point when the ball get off the screen
 		if (ball.getPosition().x <= 0)
 		{
 			player2Score++;
@@ -93,17 +114,11 @@ int main()
 
 		unsigned short pointPos = BALL_SIZE;
 
-		while (pointPos < SCREEN_HEIGHT)
-		{
-			sf::RectangleShape rectangle(sf::Vector2f(LINE_WIDTH, BALL_SIZE));
-			rectangle.setPosition(SCREEN_WIDTH/2 - BALL_SIZE/2, pointPos);
-
-			pointPos += BALL_SIZE * 2;
-
-			window.draw(rectangle);
-		}
+		window.draw(middleLine);
 
 		ball.draw(window);
+
+		particles.draw(window);
 
 		leftRacket.draw(window);
 		rightRacket.draw(window);

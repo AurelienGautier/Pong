@@ -11,10 +11,10 @@ public:
 	void moveUp();
 	void moveDown();
 	sf::FloatRect getHitBox();
-	Position getPosition();
+	sf::Vector2f getPosition();
 
 private:
 	sf::RectangleShape shape;
-	Position position;
+	sf::Vector2f position;
 	char movement;
 };
